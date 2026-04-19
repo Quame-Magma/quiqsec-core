@@ -4,6 +4,10 @@ on:
   pull_request:
   push:
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   scan:
     runs-on: ubuntu-latest
@@ -19,7 +23,7 @@ jobs:
       - name: Run QuiqSec scan
         run: node dist/cli/index.js scan . --format=sarif --output=quiqsec.sarif
       - name: Upload SARIF
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false)
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: quiqsec.sarif

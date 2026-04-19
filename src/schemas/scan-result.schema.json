@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://quiqsec.local/schemas/scan-result.schema.json",
+  "title": "QuiqSec ScanResult",
+  "type": "object",
+  "required": ["id", "tool", "severity", "file", "line", "column", "message", "ruleId", "fix"],
+  "properties": {
+    "id": { "type": "string" },
+    "tool": { "type": "string" },
+    "severity": { "enum": ["low", "medium", "high", "critical"] },
+    "file": { "type": "string" },
+    "line": { "type": "integer", "minimum": 1 },
+    "column": { "type": "integer", "minimum": 1 },
+    "message": { "type": "string" },
+    "ruleId": { "type": "string" },
+    "fix": {
+      "type": "object",
+      "required": ["type", "content"],
+      "properties": {
+        "type": { "enum": ["code_patch", "prompt"] },
+        "content": { "type": "string" }
+      }
+    },
+    "evidence": { "type": "string" }
+  }
+}

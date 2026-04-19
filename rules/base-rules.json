@@ -1,0 +1,142 @@
+[
+  {
+    "id": "no-sql-injection",
+    "description": "Detect likely SQL string concatenation",
+    "pattern": "(?:query|execute|raw)\\s*\\([^\\n]*(?:SELECT|INSERT|UPDATE|DELETE)[^\\n]*[\"'`]\\s*\\+",
+    "severity": "high",
+    "fixTemplate": "Use parameterized queries or ORM methods."
+  },
+  {
+    "id": "hardcoded-aws-key",
+    "description": "Hardcoded AWS access key",
+    "pattern": "AKIA[0-9A-Z]{16}",
+    "severity": "critical",
+    "fixTemplate": "Move AWS credentials to environment variables or a secret manager."
+  },
+  {
+    "id": "hardcoded-openai-key",
+    "description": "Hardcoded OpenAI-style API key",
+    "pattern": "\\bsk-[A-Za-z0-9_-]{20,}\\b",
+    "severity": "critical",
+    "fixTemplate": "Move API keys to environment variables or a secret manager."
+  },
+  {
+    "id": "hardcoded-stripe-key",
+    "description": "Hardcoded Stripe secret key",
+    "pattern": "\\bsk_(?:live|test)_[A-Za-z0-9]{16,}\\b",
+    "severity": "critical",
+    "fixTemplate": "Move Stripe keys to environment variables."
+  },
+  {
+    "id": "no-xss-innerhtml",
+    "description": "Unsafe innerHTML assignment",
+    "pattern": "\\.innerHTML\\s*=",
+    "severity": "high",
+    "fixTemplate": "Use textContent or sanitize trusted HTML with a vetted sanitizer."
+  },
+  {
+    "id": "no-eval",
+    "description": "Use of eval",
+    "pattern": "\\beval\\s*\\(",
+    "severity": "high",
+    "fixTemplate": "Avoid eval; use safer parsing or dispatch logic."
+  },
+  {
+    "id": "insecure-random",
+    "description": "Math.random used in security-sensitive code",
+    "pattern": "Math\\.random\\s*\\(",
+    "severity": "medium",
+    "fixTemplate": "Use crypto.getRandomValues or node:crypto for security-sensitive randomness."
+  },
+  {
+    "id": "no-rate-limit",
+    "description": "Auth route appears without visible rate-limit guard",
+    "pattern": "app\\.(?:post|use)\\s*\\(\\s*['\"]/(?:login|auth|api/auth)",
+    "severity": "high",
+    "fixTemplate": "Apply rate limiting middleware to auth and session endpoints."
+  },
+  {
+    "id": "insecure-cookie-secure",
+    "description": "Cookie set with secure disabled",
+    "pattern": "res\\.cookie\\s*\\([^\\n]*secure\\s*:\\s*false",
+    "severity": "medium",
+    "fixTemplate": "Set cookies with Secure enabled in production."
+  },
+  {
+    "id": "insecure-cookie-httponly",
+    "description": "Cookie set with httpOnly disabled",
+    "pattern": "res\\.cookie\\s*\\([^\\n]*httpOnly\\s*:\\s*false",
+    "severity": "medium",
+    "fixTemplate": "Set session cookies with HttpOnly enabled."
+  },
+  {
+    "id": "use-https",
+    "description": "Remote HTTP URL used without TLS",
+    "pattern": "['\"]http://(?!localhost|127\\.0\\.0\\.1)",
+    "severity": "medium",
+    "fixTemplate": "Use HTTPS for remote network calls."
+  },
+  {
+    "id": "secret-in-log",
+    "description": "Potential secret logged to console",
+    "pattern": "console\\.(?:log|error|warn)\\s*\\([^\\n]*(?:password|secret|token|api[_-]?key|process\\.env\\.)",
+    "severity": "high",
+    "fixTemplate": "Remove or mask secrets before logging."
+  },
+  {
+    "id": "path-traversal",
+    "description": "Potential path traversal in file access",
+    "pattern": "(?:readFile|createReadStream|sendFile)\\s*\\([^\\n]*\\.\\.",
+    "severity": "high",
+    "fixTemplate": "Normalize and constrain paths to an allowed project directory."
+  },
+  {
+    "id": "weak-tls",
+    "description": "Weak TLS protocol configured",
+    "pattern": "['\"]TLSv1(?:\\.0)?['\"]",
+    "severity": "high",
+    "fixTemplate": "Use TLS 1.2 or newer."
+  },
+  {
+    "id": "source-map-exposed",
+    "description": "Production source maps may be exposed",
+    "pattern": "sourceMap\\s*:\\s*true|\\.js\\.map\\b",
+    "severity": "medium",
+    "fixTemplate": "Disable production source maps or protect access."
+  },
+  {
+    "id": "missing-security-headers",
+    "description": "CORS middleware found without visible security headers",
+    "pattern": "app\\.use\\s*\\(\\s*cors\\s*\\(",
+    "severity": "low",
+    "fixTemplate": "Add helmet or explicit CSP, HSTS, frame, and content-type headers."
+  },
+  {
+    "id": "insecure-deserialization",
+    "description": "JSON.parse on likely external input",
+    "pattern": "JSON\\.parse\\s*\\([^\\n]*(?:req\\.|request|input|body|params|query)",
+    "severity": "high",
+    "fixTemplate": "Validate untrusted data before parsing or consuming it."
+  },
+  {
+    "id": "command-injection",
+    "description": "Shell command appears to include concatenated input",
+    "pattern": "\\b(?:exec|execSync)\\s*\\([^\\n]*\\+",
+    "severity": "critical",
+    "fixTemplate": "Use execFile/spawn with argument arrays and strict input validation."
+  },
+  {
+    "id": "missing-csrf-token",
+    "description": "HTML form without an obvious CSRF token",
+    "pattern": "<form\\s(?![^>]*(csrf|_csrf))",
+    "severity": "medium",
+    "fixTemplate": "Include and validate a CSRF token for state-changing forms."
+  },
+  {
+    "id": "hardcoded-db-password",
+    "description": "Hardcoded database password assignment",
+    "pattern": "\\bpassword\\s*[:=]\\s*['\"][^'\"]{8,}['\"]",
+    "severity": "critical",
+    "fixTemplate": "Move database passwords to environment variables or a secret manager."
+  }
+]

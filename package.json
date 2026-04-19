@@ -1,0 +1,28 @@
+{
+  "name": "quiqsec",
+  "version": "0.1.0",
+  "description": "Local-first security guardrails and scanning for AI-assisted code workflows.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "quiqsec": "./dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "start": "node dist/server/index.js",
+    "scan": "node dist/cli/index.js scan"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist",
+    "rules/base-rules.json",
+    "README.md"
+  ],
+  "devDependencies": {
+    "@types/node": "24.12.2",
+    "typescript": "5.9.3"
+  }
+}
